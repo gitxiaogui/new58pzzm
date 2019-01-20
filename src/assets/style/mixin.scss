@@ -1,0 +1,134 @@
+$orange: #F89625;
+@mixin wh($width,$height) {
+  height: $height;
+  width: $width;
+}
+
+//圆角边框
+@mixin borderRadius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius;
+}
+
+//超出省略号显示
+@mixin textOverhidden($width) {
+  width: $width;
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+
+//定位上下居中
+@mixin tc {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+//定位左右居中
+@mixin lc {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+//定位上下左右居中
+@mixin tlc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+//宽高
+@mixin wh($width,$height) {
+  width: $width;
+  height: $height;
+}
+
+//字体大小颜色
+@mixin sc($size,$color) {
+  font-size: $size;
+  color: $color;
+}
+
+@mixin bg($url) {
+  background-image: url($url);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+//弹性盒兼容
+@mixin df {
+  display: box;
+  display: -webkit-box; /* iOS 6-, Safari 3.1-6 */
+  display: -webkit-flex; /* Chrome */
+  display: -moz-box; /* Firefox 19 */
+  display: -ms-flexbox;
+  display: flex; /*flex容器*/
+}
+
+//排列顺序
+@mixin fd($fd) {
+  -webkit-flex-direction: $fd;
+  -moz-flex-direction: $fd;
+  -ms-flex-direction: $fd;
+  -o-flex-direction: $fd;
+  flex-direction: $fd;
+}
+
+//弹性盒x轴方向
+@mixin jc($jc) {
+  -webkit-justify-content: $jc;
+  -moz-justify-content: $jc;
+  -ms-justify-content: $jc;
+  -o-justify-content: $jc;
+  justify-content: $jc;
+}
+
+//弹性盒y轴方向
+@mixin ac($ac) {
+  -webkit-align-items: $ac;
+  -moz-align-items: $ac;
+  -ms-align-items: $ac;
+  -o-align-items: $ac;
+  align-items: $ac;
+}
+
+/*父元素-横向换行 */
+@mixin fw($fw) {
+  -webkit-flex-wrap: $fw;
+  -moz-flex-wrap: $fw;
+  -ms-flex-wrap: $fw;
+  -o-flex-wrap: $fw;
+  flex-wrap: $fw;
+}
+
+//平分父元素
+@mixin flex {
+  -prefix-box-flex: 1; /* old spec webkit, moz */
+  -webkit-box-flex: 1; /* OLD - iOS 6-, Safari 3.1-6 */
+  -webkit-flex: 1; /* Chrome */
+  -moz-box-flex: 1; /* Firefox 19- */
+  -ms-flex: 1; /* IE 10 */
+  flex: 1; /* NEW,  Opera 12.1, Firefox 20+ */
+}
+
+//平移
+@mixin tf($transform) {
+  -webkit-transform: $transform;
+  -moz-transform: $transform;
+  -ms-transform: $transform;
+  -o-transform: $transform;
+  transform: $transform;
+}
+//阴影
+@mixin bs($boxshadow){
+  box-shadow:$boxshadow;
+  -moz-box-shadow:$boxshadow;
+  -webkit-box-shadow:$boxshadow;
+  -ms-box-shadow:$boxshadow;
+}
