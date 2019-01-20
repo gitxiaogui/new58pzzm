@@ -6,13 +6,13 @@
   <ul class="bankList">
     <li v-for="(item,index) in bankList" :key="index">
       <div class="left">
-        <img src="../../assets/img/wode2.png" alt="">
+        <img  :src="bankNameList[item.bankName]" alt="">
       </div>
       <div class="center">
-        <p>建设银行</p>
+        <p>{{ item.bankName }}</p>
         <p>储蓄卡</p>
       </div>
-      <div class="right">686 *** *** 7215</div>
+      <div class="right">{{ item.bankAccount }}</div>
     </li>
   </ul>
 </div>
@@ -20,6 +20,22 @@
 
 <script>
 import Header from '../../components/header'
+import GD from '@/assets/img/GD.png'
+import BJ from '@/assets/img/BJ.png'
+import GF from '@/assets/img/GF.png'
+import GS from '@/assets/img/GS.png'
+import XY from '@/assets/img/XY.png'
+import JT from '@/assets/img/JT.png'
+import MS from '@/assets/img/MS.png'
+import NY from '@/assets/img/NY.png'
+import PA from '@/assets/img/PA.png'
+import PF from '@/assets/img/PF.png'
+import SH from '@/assets/img/SH.png'
+import YZ from '@/assets/img/YZ.png'
+import ZG from '@/assets/img/ZG.png'
+import ZS from '@/assets/img/ZS.png'
+import ZX from '@/assets/img/ZX.png'
+import JS from '@/assets/img/JS.png'
 export default {
   props: {},
   components: {
@@ -33,6 +49,24 @@ export default {
       headerTitle: '我的银行卡',
       bankList: [],
       realAuthStatus: false,
+      bankNameList: {
+        '交通银行': JT,
+        '中国工商银行': GS,
+        '中国银行': ZG,
+        '中国建设银行': JS,
+        '中国邮政储蓄银行': YZ,
+        '中信银行': ZX,
+        '中国光大银行': GD,
+        '招商银行': ZS,
+        '兴业银行': XY,
+        '浦发银行': PF,
+        '平安银行': PA,
+        '中国民生银行': MS,
+        '广发银行股份有限公司': GF,
+        '北京银行': BJ,
+        '中国农业银行': NY
+      },
+
     }
   },
   methods: {
@@ -89,10 +123,10 @@ export default {
       padding-right:.3rem;
       border-bottom:1px solid #999;
       .left{
-        @include wh(.6rem,.6rem);
-        margin-right:.33rem;
+        //@include wh(.6rem,.6rem);
+        margin-right:.2rem;
         img{
-          @include wh(100%,100%);
+         // @include wh(100%,100%);
         }
       }
       .right{

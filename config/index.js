@@ -14,6 +14,7 @@ module.exports = {
       '/innercustomer': {
         target: 'http://uat.wxloan.cash-ant.com',
         //target: 'http://192.168.1.140:8081',
+        //target: 'http://192.168.1.119:8081',
         changeOrigin: true,
         pathRewrite: {
           '^/innercustomer': '/innercustomer'
@@ -22,6 +23,7 @@ module.exports = {
       '/customer': {
         target: 'http://uat.wxloan.cash-ant.com',
         //target: 'http://192.168.1.140:8081',
+        //target: 'http://192.168.1.119:8081',
         changeOrigin: true,
         pathRewrite: {
           '^/customer': '/customer'

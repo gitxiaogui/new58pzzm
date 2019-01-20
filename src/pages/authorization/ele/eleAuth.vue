@@ -3,7 +3,7 @@
     <div class="eleAuth">
       <div class="title">您的手机号是？</div>
       <div class="input">
-        <mt-field placeholder="请输入本人饿了么手机号" type="tel" v-model="phone" :attr="{maxlength:11}"></mt-field>
+        <mt-field placeholder="请输入本人饿了么手机号" type="tel" v-model="formData.phone" :attr="{maxlength:11}"></mt-field>
       </div>
       <div class="btn">
           <mt-button type="primary" @click="nextStop" :disabled="loading">
@@ -16,39 +16,47 @@
 </template>
 
 <script>
+import { checkRules } from "../../../common/utils";
+import { basicRules } from "../../../common/formRules";
+
 export default {
   props: {},
   components: {},
   data(){
 	  return {
-	    phone: '',
+	    formData:{
+	      phone: '',
+      },
+
       disabled:true,
       loading:false,
     }
   },
   methods: {
     nextStop(){
-      this.loading = true
-      sessionStorage.setItem('ele',this.phone)
-      this.httpRequest.preLogin({
-        mobile: this.phone
-      }).then((res)=>{
-        console.log('获取饿了么登录')
-        this.loading = false
-        if(res.code == '00000000'){
-          if(res.data.code == '000000' || res.data.code == '000009'){
-            this.eleMsgValidate(this.phone,res.data.token)
-          }else if(res.data.code == '000001'){
-            sessionStorage.setItem('ele',this.phone)
-            this.$router.push({path:'/eleAuthCode',query:{token:res.data.token}})
-          }else{
-            this.toast(res.data.message)
+      let success = checkRules(this.formData,basicRules)
+      if(success){
+        this.loading = true
+        sessionStorage.setItem('ele',this.formData.phone)
+        this.httpRequest.preLogin({
+          mobile: this.formData.phone
+        }).then((res)=>{
+          console.log('获取饿了么登录')
+          this.loading = false
+          if(res.code == '00000000'){
+            if(res.data.code == '000000' || res.data.code == '000009'){
+              this.eleMsgValidate(this.formData.phone,res.data.token)
+            }else if(res.data.code == '000001'){
+              sessionStorage.setItem('ele',this.formData.phone)
+              this.$router.push({path:'/eleAuthCode',query:{token:res.data.token}})
+            }else{
+              this.toast(res.data.message)
+            }
           }
-        }
-      }).catch((err)=>{
-        this.loading = false
-      })
-
+        }).catch((err)=>{
+          this.loading = false
+        })
+      }
     }
   },
   created(){

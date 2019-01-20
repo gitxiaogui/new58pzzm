@@ -131,6 +131,7 @@ export default {
             merchantno: this.getCodeData.merchantno,
             requestno: this.getCodeData.requestno,
             identityid: this.getCodeData.identityid,
+            bankAccount: this.formData.bankAccount,
           }).then((res)=>{
             console.log('重新发送短信验证码',res)
             if(res.code == '00000000'){

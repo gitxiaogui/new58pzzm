@@ -48,8 +48,8 @@
             <span v-if="!loading">登录</span>
           </mt-button>
         </div>
-        <div class="hint">
-          如您尚未注册，则您输⼊验证码后即为您自动注册账号，且您确认已阅读并同意《注册服务协议》和《隐私政策》。
+        <div class="hint1">
+          如您尚未注册，则您输⼊验证码后即为您自动注册账号，且您确认已阅读并同意<span @click="goDeal">《注册服务协议》</span>
         </div>
 
       </div>
@@ -88,6 +88,10 @@
       }
     },
     methods: {
+      // 登录协议
+      goDeal(){
+        this.$router.push('/loginDeal')
+      },
       // 账号密码登录
       goPassword(){
         this.$router.push('/loginPassword')
@@ -194,8 +198,10 @@
           }else if (res.code == '600070') {
               this.getCodeImg()
             }else{
-            this.btnDisabled = true
+            this.btnDisabled = false
           }
+        }).catch((err)=>{
+          this.btnDisabled = false
         })
       },
       getCodeImg(){
@@ -373,11 +379,14 @@
             background: $orange;
           }
         }
-        .hint {
+        .hint1 {
           margin-top: .2rem;
           font-size: .2rem;
           line-height: .32rem;
           color: #999;
+          span{
+            text-decoration: underline;
+          }
         }
       }
     }

@@ -12,16 +12,16 @@
       </div>
       <div class="applyForInner">
         <ul class="statusList">
-          <li v-for="item in 3" :key="item">
+          <li v-for="(item,index) in statusList" :key="index">
             <div class="statusTitle">
-              <i class="iconfont icon-duihao2" :class="{orange: item<3 }"></i>
-              <span>审核中</span>
+              <i class="iconfont icon-duihao2" :class="{orange: item.btnDisabled ? true : false }"></i>
+              <span>{{ item.title }}</span>
             </div>
             <div class="statusContent">
               <div class="right">
-                <p>订单正在审核中，该订单含有未认证项目，为保证审核通过，请尽快认证。</p>
-                <p class="blue">前往认证</p>
-                <p class="time">2018-10-29 10:21:00</p>
+                <p>{{ item.desc }}</p>
+                <p class="blue" v-if="item.btnName" @click="JXAuth">{{ item.btnName }}</p>
+                <p class="time">{{ dateFormat(new Date(parseInt(item.time)), 'yyyy-MM-dd hh:mm:ss') }}</p>
               </div>
             </div>
           </li>
@@ -39,18 +39,36 @@
 </template>
 
 <script>
-export default {
+import { dateFormat } from "../../common/utils";
+  export default {
   props: {},
   components: {},
   data(){
-	  return {}
+	  return {
+	    statusList: []
+    }
   },
-  methods: {},
+  methods: {
+    dateFormat,
+    getLendCaseProcess(){
+      this.httpRequest.getLendCaseProcess().then((res)=>{
+        console.log('获取借款进度',res)
+        if(res.code == '00000000'){
+          this.statusList = res.data
+        }
+      })
+    },
+
+    JXAuth(){
+      this.jixuAuth()
+    }
+  },
   created(){
 
   },
   activated(){
     localStorage.setItem('headerTitle','申请进度')
+    this.getLendCaseProcess()
   }
 }
 </script>
@@ -58,7 +76,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/style/mixin";
   #applyForPlan{
-    padding:1.54rem 0 .54rem;
+    padding:1.54rem 0 0;
     @include wh(100%,auto);
     background: #f1f1f1;
     .applyForPlan{

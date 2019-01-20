@@ -20,7 +20,7 @@
             <i class="iconfont icon-youjiantou"></i>
           </div>
           <div class="bottom liInner">
-            <p>还款日当天从招商银行（尾号0298）自动扣款</p>
+            <p>还款日当天从{{ bankName }}（尾号{{ bankAccount }}）自动扣款</p>
           </div>
           <div class="hint"></div>
         </li>
@@ -35,11 +35,32 @@ export default {
   props: {},
   components: {},
   data(){
-	  return {}
+	  return {
+	    bankList: [],
+      bankName: '',
+      bankAccount: '',
+    }
   },
   methods: {
     goOrder(){
       this.$router.push('/orderDetail')
+    },
+    // 获取详情
+    queryWaitLenderCase(){
+      this.httpRequest.queryWaitLenderCase().then((res)=>{
+        console.log('获取借款详情',res)
+      })
+    },
+    // TODO 获取银行卡列表
+    getBankList(){
+      this.httpRequest.getBankList({}).then((res)=>{
+        console.log('获取银行卡列表',res)
+        if (res.code == '00000000'){
+          this.bankList = res.data
+          this.bankName = res.data[0].bankName
+          this.bankAccount = res.data[0].bankAccount.substr(res.data[0].bankAccount.length-4)
+        }
+      })
     }
   },
   created(){
@@ -47,6 +68,8 @@ export default {
   },
   activated(){
     localStorage.setItem('headerTitle','还款')
+    //this.queryWaitLenderCase()
+    this.getBankList()
   }
 }
 </script>

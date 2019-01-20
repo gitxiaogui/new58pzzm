@@ -19,20 +19,20 @@
 </template>
 
 <script>
-  export default {
-	props: {},
-	components: {},
-	data(){
+export default {
+  props: {},
+  components: {},
+  data(){
 	  return {}
-	},
-	methods: {},
-	created(){
+  },
+  methods: {},
+  created(){
 
-	},
-	activated(){
+  },
+  activated(){
 
-	}
   }
+}
 </script>
 
 <style lang="scss" scoped>

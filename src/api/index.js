@@ -24,7 +24,6 @@ axios.interceptors.request.use(function (config){
   return Promise.reject(error)
 })
 
-
 // 添加响应拦截器
 axios.interceptors.response.use(function (response){
   // 对响应数据做点什么
@@ -464,6 +463,22 @@ export const saveInLog = (data) =>{
   return axios({
     method: 'POST',
     url: '/innercustomer/user/baseinfo/saveInLog',
+    data
+  })
+}
+//TODO  获取借款信息
+export const queryWaitLenderCase = (data) =>{
+  return axios({
+    method: 'POST',
+    url: '/customer/lenderCase/queryWaitLenderCase',
+    data
+  })
+}
+//TODO  获取进度信息
+export const getLendCaseProcess = (data) =>{
+  return axios({
+    method: 'POST',
+    url: '/customer/process/getLendCaseProcess',
     data
   })
 }

@@ -177,17 +177,18 @@
     text-align: center;
     #changjian {
       @include wh(100%, 100%);
-      background: rgba(255, 255, 255, .8);
+      //background: rgba(255, 255, 255, .8);
       position: fixed;
       z-index: 10;
       top: 0;
       left: 0;
-      padding: 1.5rem 1rem;
+      padding: 1.5rem .4rem;
       .changjian {
         padding: 0 .5rem;
         border: 1px solid #ccc;
         @include wh(100%, 100%);
         color: #333;
+        background: #fff;
         text-align: left;
         .title {
           text-align: center;
