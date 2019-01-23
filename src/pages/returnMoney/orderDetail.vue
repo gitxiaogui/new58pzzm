@@ -2,16 +2,16 @@
 <div id="orderDetail">
   <div class="orderDetail">
     <ul class="orderDetail">
-      <li><span>订单状态</span><span class="red">已逾期</span></li>
-      <li><span>订单号</span><span>CO156302147952452</span></li>
-      <li><span>姓名</span><span>马冬梅</span></li>
-      <li><span>收款银行卡</span><span>招商银行622****6875</span></li>
-      <li><span>借款金额</span><span>1000 元</span></li>
-      <li><span>借款期限</span><span>7 天</span></li>
-      <li><span>应还款日期</span><span>2018-07-10</span></li>
-      <li><span>逾期滞纳金</span><span>40 元/天</span></li>
-      <li><span>逾期天数</span><span class="red">7 天</span></li>
-      <li class="lastLi"><span>总还款金额</span><span>1120 元</span></li>
+      <li><span>订单状态</span><span class="red">{{ returnMessage.statusStr }}</span></li>
+      <li><span>订单号</span><span>0g534as65gasd53a4gha</span></li>
+      <li><span>姓名</span><span>{{ returnMessage.userName }}</span></li>
+      <li><span>收款银行卡</span><span>{{ returnMessage.bankName }}{{ returnMessage.bankCard }}</span></li>
+      <li><span>借款金额</span><span>{{ returnMessage.lenderAmount | returnNumber }}</span></li>
+      <li><span>借款期限</span><span>{{ returnMessage.termDay }} 天</span></li>
+      <li><span>应还款日期</span><span>{{ returnMessage.returnDate }}</span></li>
+      <li><span>逾期滞纳金</span><span>{{ returnMessage.cost | returnNumber }}/天</span></li>
+      <li><span>逾期天数</span><span class="red">{{ returnMessage.overdueDay }}天</span></li>
+      <li class="lastLi"><span>总还款金额</span><span>{{ returnMessage.returnMoney | returnNumber }} 元</span></li>
     </ul>
     <div class="hint"></div>
   </div>
@@ -23,14 +23,22 @@ export default {
   props: {},
   components: {},
   data(){
-	  return {}
+	  return {
+	    returnMessage: {}
+    }
   },
-  methods: {},
+  methods: {
+  },
+  filters:{
+    returnNumber(num){
+      return num ? Number(num).toFixed(0) : ''
+    }
+  },
   created(){
 
   },
   activated(){
-
+    this.returnMessage = JSON.parse(sessionStorage.getItem('returnMessage'))
   }
 }
 </script>

@@ -5,14 +5,14 @@
       <img src="../../assets/img/kefu1@2x.png" alt="">
     </div>
     <div class="right">
-      <p>1.如果你需要帮助，请帮助扫描下方</p>
-      <p>二维码添加58掌柜客服，并留言。</p>
+      <p>1.如果你需要帮助，请扫描下方二维</p>
+      <p>码添加58掌柜客服，并留言。</p>
       <p> 2.微信直接搜索“zaixiankefu10”</p>
       <p>客服微信，添加并留言。</p>
     </div>
   </div>
   <div class="imgWrap">
-    <img src="../../assets/img/kefu1@2x.png" alt="">
+    <img src="../../assets/img/kefu.jpg" alt="">
   </div>
 </div>
 </template>

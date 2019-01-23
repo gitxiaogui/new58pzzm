@@ -3,7 +3,8 @@
   <ul class="authorization">
     <li v-for="(item,index) in authQueryList" :key="index" @click="nextStop(item)">
       <div class="left">
-        <div class="icon"><img src="../../assets/img/huankuan@2x.png" alt=""></div>
+        <!--<div class="icon"><img src="../../assets/img/huankuan@2x.png" alt=""></div>-->
+        <div class="icon"><img :src="item.iconUrl" alt=""></div>
         <span>{{ item.datasourceName }}</span>
       </div>
       <div class="right">
@@ -17,7 +18,7 @@
         <span>银行卡</span>
       </div>
       <div class="right" @click="goBankList">
-        <span>{{ this.bankList.length ? '以绑定' : '未绑定' }}</span>
+        <span>{{ this.bankList.length ? '已绑定' : '未绑定' }}</span>
         <i class="iconfont icon-youjiantou"></i>
       </div>
     </li>
@@ -96,6 +97,7 @@ export default {
   activated(){
     localStorage.setItem('headerTitle','认证信息')
     this.getAuthQuery()
+    this.getBankList()
   }
 }
 </script>
@@ -121,10 +123,12 @@ export default {
           @include jc(center);
           i{
             margin-right:.2rem;
+            color:#aaa;
           }
           .icon{
             &.iconfont{
               margin-right:.2rem;
+
             }
             @include wh(.4rem,.4rem);
             margin-right:.2rem;

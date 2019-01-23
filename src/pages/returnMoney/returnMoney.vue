@@ -3,24 +3,26 @@
   <div class="returnMoney">
     <div class="topTitle">
       <span class="title">应还总金额（元）</span>
-      <p>2000.00</p>
-      <span class="btn">还款</span>
+      <span v-if="!returnData.returnMoney" style="padding-top:.2rem;color:#ccc;">暂无待还订单</span>
+      <p  v-if="returnData.returnMoney">{{ returnData.returnMoney | returnNumber }}</p>
+      <span v-if="returnData.returnMoney" @click="returnMoney" class="btn">还款</span>
     </div>
     <div class="hint"></div>
     <div class="order">
       <div class="orderTitle">待还订单</div>
       <ul class="orderList">
-        <li v-for="(item,index) in 3" :key="index" @click="goOrder(item)">
+        <li v-if="!returnData.returnMoney" style="text-align: center;color:#ccc;">暂无待还订单</li>
+        <li v-if="returnData.returnMoney" @click="goOrder()">
           <div class="top liInner">
-            <span>11月07日待还</span>
-            <span>还剩6天还款</span>
+            <span>还款日期{{ returnData.expireDate }}</span>
+            <span>还剩{{ returnData.expireDay }}天还款</span>
           </div>
           <div class="center liInner">
-            <span>2000.00</span>
+            <span>{{ returnData.returnMoney | returnNumber }}</span>
             <i class="iconfont icon-youjiantou"></i>
           </div>
           <div class="bottom liInner">
-            <p>还款日当天从{{ bankName }}（尾号{{ bankAccount }}）自动扣款</p>
+            <p>还款日当天从{{ returnData.bankName }}（尾号{{ returnData.fourBankCard }}）自动扣款</p>
           </div>
           <div class="hint"></div>
         </li>
@@ -36,19 +38,28 @@ export default {
   components: {},
   data(){
 	  return {
+	    returnData:{},
 	    bankList: [],
       bankName: '',
       bankAccount: '',
     }
   },
   methods: {
+    returnMoney(){
+      sessionStorage.setItem('returnMessage',JSON.stringify(this.returnData))
+      this.$router.push('/affirmReturnMoney')
+    },
     goOrder(){
+      sessionStorage.setItem('returnMessage',JSON.stringify(this.returnData))
       this.$router.push('/orderDetail')
     },
     // 获取详情
     queryWaitLenderCase(){
       this.httpRequest.queryWaitLenderCase().then((res)=>{
         console.log('获取借款详情',res)
+        if(res.code == '00000000'){
+          this.returnData = res.data
+        }
       })
     },
     // TODO 获取银行卡列表
@@ -56,11 +67,18 @@ export default {
       this.httpRequest.getBankList({}).then((res)=>{
         console.log('获取银行卡列表',res)
         if (res.code == '00000000'){
-          this.bankList = res.data
-          this.bankName = res.data[0].bankName
-          this.bankAccount = res.data[0].bankAccount.substr(res.data[0].bankAccount.length-4)
+          if(res.data.length>0){
+            this.bankList = res.data
+            this.bankName = res.data[0].bankName
+            this.bankAccount = res.data[0].bankAccount.substr(res.data[0].bankAccount.length-4)
+          }
         }
       })
+    }
+  },
+  filters:{
+    returnNumber(num){
+      return num ? Number(num).toFixed(2) : ''
     }
   },
   created(){
@@ -68,7 +86,7 @@ export default {
   },
   activated(){
     localStorage.setItem('headerTitle','还款')
-    //this.queryWaitLenderCase()
+    this.queryWaitLenderCase()
     this.getBankList()
   }
 }

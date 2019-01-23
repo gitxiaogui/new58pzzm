@@ -6,7 +6,7 @@ import router from './router'
 import MintUi from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import * as httpRequest from './api/index'
-
+import '../static/geolocation.min.js'//地图定位
 
 
 // import FastClick from 'fastclick'

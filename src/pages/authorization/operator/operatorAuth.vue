@@ -3,7 +3,7 @@
     <div class="operatorAuth">
       <div class="title">您的手机号是？</div>
       <div class="input">
-        <mt-field placeholder="请输入本人实名认证手机号" type="tel" v-model="phone" :attr="{minlength:11,maxlength:11}"></mt-field>
+        <mt-field placeholder="请输入本人实名认证手机号" type="tel" v-model="formData.phone" :attr="{minlength:11,maxlength:11}"></mt-field>
       </div>
       <div class="btn">
         <mt-button type="primary" @click="nextStop" :disabled="loading">
@@ -39,12 +39,17 @@
 </template>
 
 <script>
+import { checkRules} from '../../../common/utils'
+import { basicRules } from '../../../common/formRules'
 export default {
   props: {},
   components: {},
   data(){
     return {
-      phone: '',
+      formData: {
+        phone: '',
+      },
+
       disabled: true,
       loading: false,
       common: false
@@ -52,12 +57,11 @@ export default {
   },
   methods: {
     nextStop(){
-      if (!this.phone){
-        this.toast('请输入手机号')
-        return
+      let success = checkRules(this.formData,basicRules)
+      if (success){
+        this.$router.push('/operatorAuthPassword')
+        sessionStorage.setItem('operator', this.formData.phone)
       }
-      this.$router.push('/operatorAuthPassword')
-      sessionStorage.setItem('operator', this.phone)
     },
     showCommon(){
       this.common = true

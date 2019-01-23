@@ -3,17 +3,18 @@
   <ShowCheckBank v-if="closeCheckBank"></ShowCheckBank>
   <div class="affirmReturnMoney">
     <ul class="orderDetail">
-      <li><span>还款本金</span><span>1000 元</span></li>
+      <li><span>还款本金</span><span>{{ returnMessage.lenderAmount | returnNumber }}元</span></li>
       <li><span>利息</span><span>0 元</span></li>
-      <li><span>逾期滞纳金</span><span>40元/天</span></li>
-      <li><span>逾期天数</span><span>3 天</span></li>
-      <li><span>总罚息</span><span>120 元</span></li>
-      <li class="lastLi"><span>总还款金额</span><span>1120 元</span></li>
+      <li><span>逾期滞纳金</span><span>{{ returnMessage.cost | returnNumber }}元/天</span></li>
+      <li><span>逾期天数</span><span>{{ returnMessage.overdueDay }}天</span></li>
+      <li><span>总罚息</span><span>{{ returnMessage.overdueDay * returnMessage.cost }} 元</span></li>
+      <li class="lastLi"><span>总还款金额</span><span>{{ returnMessage.returnMoney | returnNumber }}元</span></li>
     </ul>
     <div class="hint"></div>
     <div class="checkBnak" @click="showCheckBank">
       <span>还款银行卡</span>
-      <p><span>招商银⾏622****6875</span><i class="iconfont icon-youjiantou"></i></p>
+      <p v-if="!bankIndex"><span>{{ returnMessage.bankName }}{{ returnMessage.bankCard }}</span><i class="iconfont icon-youjiantou"></i></p>
+      <p v-if="bankIndex"><span>{{ bankName }}{{ bankAccount }}</span><i class="iconfont icon-youjiantou"></i></p>
     </div>
     <div class="btn">
       <mt-button type="primary" @click="submitData">确认还款</mt-button>
@@ -25,6 +26,7 @@
 <script>
 import ShowCheckBank from '../../components/showCheckBank'
 import BUS from '../../vueBus/index'
+import { Toast } from 'mint-ui'
 export default {
   props: {},
   components: {
@@ -32,7 +34,12 @@ export default {
   },
   data(){
 	  return {
-	    closeCheckBank:false
+	    closeCheckBank: false,
+      returnMessage: {},
+      bankList: [],
+      bankIndex: '',
+      bankName: '',
+      bankAccount: ''
     }
   },
   methods: {
@@ -42,17 +49,58 @@ export default {
     },
     // 确认还款
     submitData(){
-
-    }
+	    let that = this
+      this.httpRequest.returnMoney({
+        bankCardId: this.bankList[0].id,
+        lenderCaseId: this.returnMessage.id
+      }).then((res)=>{
+        console.log('还款成功',res)
+        if(res.code == '00000000'){
+          Toast({
+            message: '还款申请已提交，因银行通道返回结果有一定延时，请留意还款成功短信通知。',
+            position: 'top',
+            duration: 3000
+          })
+          setTimeout(function(){
+            that.$router.push('/main')
+          },3000)
+        }
+      })
+    },
+    // TODO 获取银行卡列表
+    getBankList(){
+      this.httpRequest.getBankList({}).then((res)=>{
+        console.log('获取银行卡列表',res)
+        if (res.code == '00000000'){
+          this.bankList = res.data
+        }
+      })
+    },
   },
-  created(){
-
+  filters:{
+    returnNumber(num){
+      return num ? Number(num).toFixed(0) : ''
+    }
   },
   activated(){
     BUS.$on('closeCheckBank',()=>{
       this.closeCheckBank = false
     })
+
+     BUS.$on('closeCheckBank',(index)=>{
+      this.closeCheckBank = false
+      if(index>0){
+        let bankAccount = this.bankList[this.bankIndex-1].bankAccount
+        this.bankIndex = index
+        this.bankMane = this.bankList[this.bankIndex-1].bankName
+        this.bankAccount =bankAccount.substr(0,3)+ '****' + bankAccount.substr(bankAccount.length-4)
+      }
+    })
     localStorage.setItem('headerTitle','还款')
+    this.returnMessage = JSON.parse(sessionStorage.getItem('returnMessage'))
+    this.getBankList()
+
+
   }
 }
 </script>

@@ -56,7 +56,15 @@
           sessionStorage.setItem('userMessage',JSON.stringify(this.formData))
           let success = checkRules(this.formData,basicRules)
           if(success){
-            this.$router.push('/peopleImg')
+           this.httpRequest.validAuth({
+             idCard: this.formData.idCard,
+             name: this.formData.username,
+           }).then((res)=>{
+             console.log('查询是否实名认证',res)
+              if(res.code == '00000000'){
+               this.$router.push('/peopleImg')
+              }
+           })
           }
         }else{
           this.toast('请先上传图片')

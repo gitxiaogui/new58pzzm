@@ -24,7 +24,6 @@ axios.interceptors.request.use(function (config){
   return Promise.reject(error)
 })
 
-
 // 添加响应拦截器
 axios.interceptors.response.use(function (response){
   // 对响应数据做点什么
@@ -467,7 +466,7 @@ export const saveInLog = (data) =>{
     data
   })
 }
-//TODO  获取借款信息
+//TODO  获取借款信息 借款列表
 export const queryWaitLenderCase = (data) =>{
   return axios({
     method: 'POST',
@@ -483,3 +482,29 @@ export const getLendCaseProcess = (data) =>{
     data
   })
 }
+//TODO  查看是否实名认证过
+export const validAuth = (data) =>{
+  return axios({
+    method: 'POST',
+    url: '/customer/auth/validAuth',
+    data
+  })
+}
+//TODO  点击还款
+export const returnMoney = (data) =>{
+  return axios({
+    method: 'POST',
+    url: '/customer/lenderCase/returnMoney',
+    data
+  })
+}
+
+//TODO  添加设备信息
+export const addDeviceInfo = (data) =>{
+  return axios({
+    method: 'POST',
+    url: '/customer/deviceInfo/addDeviceInfo',
+    data
+  })
+}
+

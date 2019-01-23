@@ -5,17 +5,17 @@
     <div class="titleHeader">
       <div class="titleCotent">
         <span>申请金额（元）</span>
-        <p>1000.00</p>
+        <p>{{ productData.basicAmount | returnNumber }}</p>
       </div>
     </div>
     <div class="hint"></div>
     <div class="detailList">
       <p><span>申请期限</span><span>{{ productData.period }}{{ periodSpanOptions[productData.periodSpan] }}</span></p>
-      <p v-for="(item,index) in costList" :key="index" v-if="item.finaceItemCode==1009"><span>服务费</span><span>{{ item.cost }}</span></p>
+      <p v-for="(item,index) in costList" :key="index" v-if="item.finaceItemCode==1009"><span>服务费</span><span>{{ item.cost | returnNumber }}元</span></p>
       <p><span>申请用途</span><span>{{ productData.prodName }}</span></p>
-      <p v-for="(item,index) in costList"  :key="index" v-if="item.finaceItemCode==1002"><span>利息费用</span><span>{{ item.cost }}</span></p>
-      <p v-for="(item,index) in costList"  :key="index" v-if="item.finaceItemCode==1003"><span>逾期罚息</span><span>{{ item.cost }}元</span></p>
-      <p><span>收款银行卡</span><span @click="checkBank" v-if="this.bankMane"><i>{{ this.bankMane }}({{ this.bankAccount }})</i><i class="iconfont icon-youjiantou"></i></span></p>
+      <p v-for="(item,index) in costList"  :key="index" v-if="item.finaceItemCode==1002"><span>利息费用</span><span>{{ item.cost | returnNumber }}元</span></p>
+      <p v-for="(item,index) in costList"  :key="index" v-if="item.finaceItemCode==1003"><span>逾期罚息(每天)</span><span>{{ item.cost | returnNumber }}元</span></p>
+      <p><span>收款银行卡</span><span  @click="checkBank" v-if="!this.bankMane">添加银行卡<i class="iconfont icon-youjiantou"></i></span><span @click="checkBank" v-if="this.bankMane"><i>{{ this.bankMane }}({{ this.bankAccount }})</i><i class="iconfont icon-youjiantou"></i></span></p>
     </div>
     <div class="btn">
       <mt-button type="primary" @click="submitData" :disabled="loading">
@@ -41,7 +41,7 @@ export default {
       closeCheckBank: false,
       productData:{},
       costList: [],
-      periodSpanOptions: {'0': '无','1':'日','2':'周','3':'月','4':'年'},
+      periodSpanOptions: {'0': '无','1':'天','2':'周','3':'月','4':'年'},
       bankList: [],
       lenderId: '',
       bankMane:'',
@@ -51,6 +51,10 @@ export default {
   },
   methods: {
     submitData(){
+      if(!this.bankList.length){
+        this.toast('请先添加银行卡')
+        return
+      }
       this.httpRequest.sureLenderCase({
         bankCardId: this.bankIndex ? this.bankList[this.bankIndex-1].id : this.bankList[0].id,
         lenderCaseId: this.lenderId
@@ -94,8 +98,10 @@ export default {
       })
     },
   },
-  created(){
-
+  filters:{
+    returnNumber(num){
+      return num ? Number(num).toFixed(2) : ''
+    }
   },
   activated(){
     BUS.$on('closeCheckBank',(index)=>{

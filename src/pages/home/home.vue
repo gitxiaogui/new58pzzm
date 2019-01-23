@@ -105,7 +105,8 @@ export default {
       days:'',
       productId: '',
 
-      flagData: {}
+      flagData: {},
+      address: {}
     }
   },
   methods: {
@@ -270,6 +271,59 @@ export default {
         }
       })
     },
+    //初始化获取定位信息
+      addAddress(){
+        this.geolocation = new qq.maps.Geolocation("GRUBZ-YYTCF-NDQJW-NP35Z-GQQU7-VQBRV", "myapp");
+        this.options = {timeout: 8000};
+        this.geolocation.getLocation(this.showPosition, this.showErr, this.options)
+      },
+      showPosition(position){
+        //console.log(JSON.stringify(position, null, 4))
+        this.address = JSON.parse(JSON.stringify(position, null, 4))
+        console.log(this.address)
+        sessionStorage.setItem('address',JSON.stringify(position, null, 4))
+        console.log(JSON.stringify(this.address))
+        /*if(this.type==1){
+          return
+        }*/
+        this.httpRequest.addDeviceInfo({
+           deviceType:"",//设备类型
+            imei:"",//设备的imei或meid号
+            keychain_uuid:"",//基于keychain的uuid
+            idfa:"",//广告ID
+            idfv:"",//供应商ID
+            mac:"",//MAC地址
+            longitude:this.address.lng,//经度值
+            latitude:this.address.lat,//维度值
+            osName:"",//设备系统名称
+            osVersion:"",//设备系统版本
+            browserName:"",//浏览器名称
+            browserVersion:"",//浏览器版本
+            address:this.address.province+this.address.city+this.address.addr
+        }).then((res)=>{
+          console.log('获取设备信息',res)
+        })
+      },
+      showErr(){
+        this.httpRequest.addDeviceInfo({
+           deviceType:"",//设备类型
+            imei:"",//设备的imei或meid号
+            keychain_uuid:"",//基于keychain的uuid
+            idfa:"",//广告ID
+            idfv:"",//供应商ID
+            mac:"",//MAC地址
+            longitude:'',//经度值
+            latitude:'',//维度值
+            osName:"",//设备系统名称
+            osVersion:"",//设备系统版本
+            browserName:"",//浏览器名称
+            browserVersion:"",//浏览器版本
+            address:''
+        }).then((res)=>{
+          console.log('获取设备信息',res)
+        })
+        alert('请手动设置打开手机定位服务')
+      },
   },
   created(){
     setInterval(this.showMarquee, 2000)
@@ -306,6 +360,11 @@ export default {
     }
 
     this.getSaveInLog()
+    // 定位
+    if(!sessionStorage.getItem('address')){
+      this.addAddress()
+    }
+
   }
 }
 </script>
