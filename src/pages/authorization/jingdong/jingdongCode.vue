@@ -106,7 +106,7 @@ export default {
   activated(){
     this.timed()
     this.phone = sessionStorage.getItem('jingdong')
-    localStorage.setItem('headerTitle','饿了么认证')
+    localStorage.setItem('headerTitle','京东认证')
     this.token = this.$route.query.token
   }
 }

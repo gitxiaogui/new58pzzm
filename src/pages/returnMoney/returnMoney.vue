@@ -3,19 +3,20 @@
   <div class="returnMoney">
     <div class="topTitle">
       <span class="title">应还总金额（元）</span>
-      <span v-if="!returnData.returnMoney" style="padding-top:.2rem;color:#ccc;">暂无待还订单</span>
-      <p  v-if="returnData.returnMoney">{{ returnData.returnMoney | returnNumber }}</p>
-      <span v-if="returnData.returnMoney" @click="returnMoney" class="btn">还款</span>
+      <span v-if="!returnMoneyStatus" style="padding-top:.2rem;color:#ccc;">暂无待还订单</span>
+      <p  v-if="returnMoneyStatus">{{ returnData.returnMoney | returnNumber }}</p>
+      <span v-if="returnMoneyStatus" @click="returnMoney" class="btn">还款</span>
     </div>
     <div class="hint"></div>
     <div class="order">
       <div class="orderTitle">待还订单</div>
       <ul class="orderList">
-        <li v-if="!returnData.returnMoney" style="text-align: center;color:#ccc;">暂无待还订单</li>
-        <li v-if="returnData.returnMoney" @click="goOrder()">
+        <li v-if="!returnMoneyStatus" style="text-align: center;color:#ccc;">暂无待还订单</li>
+        <li v-if="returnMoneyStatus" @click="goOrder()">
           <div class="top liInner">
             <span>还款日期{{ returnData.expireDate }}</span>
-            <span>还剩{{ returnData.expireDay }}天还款</span>
+            <span v-if="returnData.overdueDay<=0" class="blue">还剩{{ returnData.expireDay }}天还款</span>
+            <span v-else class="red">已逾期{{ returnData.overdueDay }}天</span>
           </div>
           <div class="center liInner">
             <span>{{ returnData.returnMoney | returnNumber }}</span>
@@ -42,6 +43,7 @@ export default {
 	    bankList: [],
       bankName: '',
       bankAccount: '',
+      returnMoneyStatus: false,
     }
   },
   methods: {
@@ -58,7 +60,12 @@ export default {
       this.httpRequest.queryWaitLenderCase().then((res)=>{
         console.log('获取借款详情',res)
         if(res.code == '00000000'){
-          this.returnData = res.data
+          if(res.data){
+            this.returnData = res.data
+            if(this.returnData.returnMoney){
+              this.returnMoneyStatus = true
+            }
+          }
         }
       })
     },
@@ -87,7 +94,7 @@ export default {
   activated(){
     localStorage.setItem('headerTitle','还款')
     this.queryWaitLenderCase()
-    this.getBankList()
+    //this.getBankList()
   }
 }
 </script>
@@ -96,9 +103,10 @@ export default {
 @import '../../assets/style/mixin';
 #returnMoney{
   padding:1rem 0;
-  @include wh(100%,auto);
+  @include wh(100%,100%);
   .returnMoney{
-    @include wh(100%,auto);
+    @include wh(100%,100%);
+    overflow-y: auto;
     .topTitle{
       @include df;
       @include fd(column);
@@ -141,8 +149,11 @@ export default {
               font-weight:bold;
             }
             &.top{
-              span:nth-of-type(2){
+              .red{
                 color:#FF252D;
+              }
+              .blue{
+                color:#0E88EB;
               }
             }
             &.bottom{

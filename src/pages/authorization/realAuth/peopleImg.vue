@@ -77,9 +77,9 @@ export default {
           let result = this.result
           let img = new Image()
           img.src = result
-          // 判断图片是否大于1500K,是就直接上传，反之压缩图片
+          // 判断图片是否大于1000K,是就直接上传，反之压缩图片
           self.headerImage = this.result;//没有压缩的
-          if (this.result.length <= (1500 * 1024)) {
+          if (this.result.length <= (1000 * 1024)) {
             img.onload = function () {
               let data = self.compress(img,Orientation,1)
               self.headerImage1 = data

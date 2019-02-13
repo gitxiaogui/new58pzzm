@@ -340,6 +340,10 @@ export default {
     this.getBannerList()
 
     if(sessionStorage.getItem('authorization')){
+      // 定位
+    if(!sessionStorage.getItem('address')){
+      this.addAddress()
+    }
       if(!sessionStorage.getItem('checkPassword')){
         this.checkPassword()
       }
@@ -360,10 +364,7 @@ export default {
     }
 
     this.getSaveInLog()
-    // 定位
-    if(!sessionStorage.getItem('address')){
-      this.addAddress()
-    }
+
 
   }
 }
@@ -375,11 +376,14 @@ export default {
   #home {
     position: relative;
     @include wh(100%, 100%);
+    overflow-y: auto;
     .home {
       @include wh(100%, 100%);
+      overflow-y: auto;
        position: absolute;
       top: 0;
       left: 0;
+      padding-bottom:1.4rem;
       .banner {
         .mint-swipe {
           height: 4rem;
@@ -390,7 +394,7 @@ export default {
         }
       }
       .content {
-        height: 6rem;
+        height: 5.8rem;
         position: relative;
         font-size: .32rem;
         margin: -.5rem auto 0;
@@ -444,7 +448,7 @@ export default {
       }
       .subao {
         text-align: center;
-        padding-top: .8rem;
+        padding-top: .6rem;
         .marquee_box {
           position: relative;
           height: .5rem;

@@ -16,7 +16,7 @@
     <div class="btn">
       <mt-button type="primary" @click="submitData" :disabled="loading">
         <mt-spinner v-if="loading" type="triple-bounce" :size="24"></mt-spinner>
-        <span v-if="!loading">登录</span>
+        <span v-if="!loading">完成</span>
       </mt-button>
     </div>
     <p><span>注</span>:第一次设置登录密码的新用户，无需填写旧密码，直接设置新密码即可。</p>
@@ -45,12 +45,12 @@ export default {
     submitData(){
       let success = checkRules(this.formData,basicRules)
       if (success){
+        if(this.formData.oldPassWord == this.formData.newPassWord){
+          this.toast('新旧密码不可设置相同')
+          return
+        }
         if(this.formData.newPassWord != this.formData.surePassWord){
-          this.Toast({
-            message: '两次密码不一样',
-            position: 'top',
-            duration: 1500
-          })
+          this.toast('两次密码不一样')
           return
         }
         this.loading = true

@@ -1,7 +1,7 @@
 <template>
 <div id="setting">
   <div class="setting">
-    <p @click="goAlterPassword"><span>修改登录密码</span><i class="iconfont icon-youjiantou"></i></p>
+    <p @click="goAlterPassword"><span>修改/设置登录密码</span><i class="iconfont icon-youjiantou"></i></p>
     <p><span>关于58掌柜</span><span>V 1.0</span></p>
     <div class="btn" @click="logOut">退出登录</div>
   </div>
@@ -19,6 +19,7 @@ export default {
     logOut(){
       sessionStorage.removeItem('authorization')
       sessionStorage.removeItem('phone')
+      sessionStorage.removeItem('checkPassword')
       this.$router.push('/loginCode')
     },
     goAlterPassword(){

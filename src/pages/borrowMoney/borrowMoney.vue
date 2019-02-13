@@ -15,7 +15,7 @@
       <p><span>申请用途</span><span>{{ productData.prodName }}</span></p>
       <p v-for="(item,index) in costList"  :key="index" v-if="item.finaceItemCode==1002"><span>利息费用</span><span>{{ item.cost | returnNumber }}元</span></p>
       <p v-for="(item,index) in costList"  :key="index" v-if="item.finaceItemCode==1003"><span>逾期罚息(每天)</span><span>{{ item.cost | returnNumber }}元</span></p>
-      <p><span>收款银行卡</span><span  @click="checkBank" v-if="!this.bankMane">添加银行卡<i class="iconfont icon-youjiantou"></i></span><span @click="checkBank" v-if="this.bankMane"><i>{{ this.bankMane }}({{ this.bankAccount }})</i><i class="iconfont icon-youjiantou"></i></span></p>
+      <p><span>收款银行卡</span><span  @click="checkBank" class="blue" v-if="!bankName">添加银行卡<i class="iconfont icon-youjiantou"></i></span><span @click="checkBank" v-if="bankName"><i>{{ bankName }}({{ bankAccount }})</i><i class="iconfont icon-youjiantou"></i></span></p>
     </div>
     <div class="btn">
       <mt-button type="primary" @click="submitData" :disabled="loading">
@@ -44,7 +44,7 @@ export default {
       periodSpanOptions: {'0': '无','1':'天','2':'周','3':'月','4':'年'},
       bankList: [],
       lenderId: '',
-      bankMane:'',
+      bankName:'',
       bankAccount:'',
       bankIndex:''
     }
@@ -62,7 +62,7 @@ export default {
         console.log('')
         if(res.code == '00000000'){
           this.toast('借款成功')
-          this.$router.push('/returnMoney')
+          this.$router.push('/main')
         }
       })
     },
@@ -87,10 +87,10 @@ export default {
           this.bankList = res.data
           if(res.data.length>0){
             if(this.bankIndex){
-              this.bankMane = res.data[this.bankIndex-1].bankName
+              this.bankName = res.data[this.bankIndex-1].bankName
               this.bankAccount = res.data[this.bankIndex-1].bankAccount.substr(res.data[this.bankIndex-1].bankAccount.length-4)
             }else{
-              this.bankMane = res.data[0].bankName
+              this.bankName = res.data[0].bankName
               this.bankAccount = res.data[0].bankAccount.substr(res.data[0].bankAccount.length-4)
             }
           }
@@ -109,7 +109,7 @@ export default {
       if(index>0){
         sessionStorage.setItem('bank',index)
         this.bankIndex = index
-        this.bankMane = this.bankList[this.bankIndex-1].bankName
+        this.bankName = this.bankList[this.bankIndex-1].bankName
         this.bankAccount = this.bankList[this.bankIndex-1].bankAccount.substr(this.bankList[this.bankIndex-1].bankAccount.length-4)
         console.log(index)
       }
@@ -133,6 +133,7 @@ export default {
     position: absolute;
     top:1rem;
     left:0;
+    padding-bottom:1rem;
     @include wh(100%,100%);
     .titleHeader{
       padding:.5rem .3rem;
@@ -166,6 +167,9 @@ export default {
         border-bottom:1px solid #999;
         &:nth-last-child(1){
           border:none;
+        }
+        .blue{
+          color:#0E88EB;
         }
         span{
           font-size:.3rem;

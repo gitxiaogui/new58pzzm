@@ -9,7 +9,10 @@
       </div>
       <ul class="bankList" v-if="bankList.length>0">
         <li v-for="(item,index) in bankList" :key="index" @click="checkBank(index)">
-          <div class="left"><img src="../assets/img/wode1.png" alt=""></div>
+          <div class="left">
+            <!--<img src="../assets/img/BJ.png" alt="">-->
+            <img  :src="bankNameList[item.bankName]" alt="">
+          </div>
           <div class="center">
             <p class="bankName">{{ item.bankName }}（尾号{{ item.bankAccount.substr(item.bankAccount.length-4) }}）</p>
             <span>立即到账</span>
@@ -27,11 +30,44 @@
 
 <script>
 import BUS from '../vueBus/index'
+import GD from '@/assets/img/GD.png'
+import BJ from '@/assets/img/BJ.png'
+import GF from '@/assets/img/GF.png'
+import GS from '@/assets/img/GS.png'
+import XY from '@/assets/img/XY.png'
+import JT from '@/assets/img/JT.png'
+import MS from '@/assets/img/MS.png'
+import NY from '@/assets/img/NY.png'
+import PA from '@/assets/img/PA.png'
+import PF from '@/assets/img/PF.png'
+import SH from '@/assets/img/SH.png'
+import YZ from '@/assets/img/YZ.png'
+import ZG from '@/assets/img/ZG.png'
+import ZS from '@/assets/img/ZS.png'
+import ZX from '@/assets/img/ZX.png'
+import JS from '@/assets/img/JS.png'
 export default {
   props: {},
   components: {},
   data(){
 	  return {
+	    bankNameList: {
+        '交通银行': JT,
+        '中国工商银行': GS,
+        '中国银行': ZG,
+        '中国建设银行': JS,
+        '中国邮政储蓄银行': YZ,
+        '中信银行': ZX,
+        '中国光大银行': GD,
+        '招商银行': ZS,
+        '兴业银行': XY,
+        '浦发银行': PF,
+        '平安银行': PA,
+        '中国民生银行': MS,
+        '广发银行股份有限公司': GF,
+        '北京银行': BJ,
+        '中国农业银行': NY
+      },
 	    bankList: [],
       checkedBank: 0
     }
@@ -70,6 +106,8 @@ export default {
   },
   mounted(){
     this.getBankList()
+    this.checkedBank = sessionStorage.getItem('bank') ? sessionStorage.getItem('bank')-1 : 0
+    console.log(11,this.checkedBank)
   },
   activated(){
 

@@ -8,7 +8,7 @@
       <li><span>逾期滞纳金</span><span>{{ returnMessage.cost | returnNumber }}元/天</span></li>
       <li><span>逾期天数</span><span>{{ returnMessage.overdueDay }}天</span></li>
       <li><span>总罚息</span><span>{{ returnMessage.overdueDay * returnMessage.cost }} 元</span></li>
-      <li class="lastLi"><span>总还款金额</span><span>{{ returnMessage.returnMoney | returnNumber }}元</span></li>
+      <li class="lastLi"><span style="color:#333;">总还款金额</span><span>{{ returnMessage.returnMoney | returnNumber }}元</span></li>
     </ul>
     <div class="hint"></div>
     <div class="checkBnak" @click="showCheckBank">
@@ -90,9 +90,10 @@ export default {
      BUS.$on('closeCheckBank',(index)=>{
       this.closeCheckBank = false
       if(index>0){
-        let bankAccount = this.bankList[this.bankIndex-1].bankAccount
+        sessionStorage.setItem('bank',index)
         this.bankIndex = index
-        this.bankMane = this.bankList[this.bankIndex-1].bankName
+        let bankAccount = this.bankList[this.bankIndex-1].bankAccount
+        this.bankName = this.bankList[this.bankIndex-1].bankName
         this.bankAccount =bankAccount.substr(0,3)+ '****' + bankAccount.substr(bankAccount.length-4)
       }
     })
@@ -128,7 +129,7 @@ export default {
           }
           &.lastLi{
             color:#333;
-            padding:.46rem .3rem .66rem 0;
+            padding:.5rem .3rem 1rem 0;
             border:none;
           }
         }

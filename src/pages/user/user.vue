@@ -2,7 +2,8 @@
   <div id="user">
     <div class="user">
       <div class="userTitle">
-        <img src="../../assets/img/wode-user.png" alt="">
+        <img v-if="!authorization" src="../../assets/img/wode-user.png" alt="">
+        <img v-if="authorization" src="../../assets/img/logined.png" alt="">
         <div v-if="!phone" class="login"  @click="goLogin"><span>登录</span>/<span>注册</span></div>
         <div v-if="phone" class="logined">{{ phoneNumber }}</div>
       </div>
@@ -17,7 +18,7 @@
         </li>
         <li @click="myBank">
           <img src="../../assets/img/xinyongqia@2x.png" alt="">
-          <span>我的银行</span>
+          <span>我的银行卡</span>
         </li>
       </ul>
       <div class="hint"></div>
@@ -57,12 +58,13 @@ export default {
   components: {},
   data(){
 	  return {
-	    phone:'',
+	    phone: '',
+      authorization: ''
     }
   },
   methods: {
     goReturnMoney(){
-      if (!sessionStorage.getItem('authorization')){
+      if (!this.authorization){
         this.$router.push('/loginCode')
         return
       }
@@ -75,7 +77,7 @@ export default {
       this.$router.push('/bankList')
     },
     goSetting(){
-      if (!sessionStorage.getItem('authorization')){
+      if (!this.authorization){
         this.$router.push('/loginCode')
         return
       }
@@ -88,7 +90,7 @@ export default {
       this.$router.push('/helpCenter')
     },
     goApplyForPlan(){
-      if (!sessionStorage.getItem('authorization')){
+      if (!this.authorization){
         this.$router.push('/loginCode')
         return
       }
@@ -103,6 +105,7 @@ export default {
   },
   activated(){
     this.phone = sessionStorage.getItem('phone')
+    this.authorization = sessionStorage.getItem('authorization')
   }
 }
 </script>
