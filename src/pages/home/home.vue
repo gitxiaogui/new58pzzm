@@ -14,22 +14,22 @@
         <div class="content_inner one" v-if="authStatus==0">
           <div class="title">现金短贷-灵活借还</div>
           <div class="edu">最高可借额度（元）</div>
-          <div class="price">{{ formatMoney(limitMoney,0) }}</div>
-          <mt-button @click="btnOne" type="default">查看我的额度</mt-button>
+          <div class="price">{{ limitMoney }}</div>
+          <mt-button @click="btnZero" type="default">查看我的额度</mt-button>
         </div>
         <!--------------------------------继续认证-生成订单----------------------------------------->
         <div class="content_inner two" v-if="authStatus==1">
           <div class="title">现金短贷-灵活借还</div>
           <div class="edu">可借额度（元）</div>
-          <div class="price">{{ formatMoney(basicAmount,0) }}</div>
-          <mt-button @click="btnTwo" type="default">继续认证</mt-button>
+          <div class="price">{{ basicAmount }}</div>
+          <mt-button @click="btnOne" type="default">继续认证</mt-button>
         </div>
         <!--------------------------------审核中----------------------------------------->
         <div class="content_inner three"  v-if="authStatus==2">
           <div class="title">现金短贷-灵活借还</div>
           <img src="../../assets/img/money-home.png" alt="">
           <div class="money">一大波钞票正向你涌来~</div>
-          <mt-button @click="btnThree" type="default">审核中</mt-button>
+          <mt-button @click="btnTwo" type="default">审核中</mt-button>
         </div>
         <!--------------------------------审核未通过-------------------------------------->
         <div class="content_inner four"  v-if="authStatus==3">
@@ -42,7 +42,7 @@
         <div class="content_inner two" v-if="authStatus==4">
           <div class="title">现金短贷-灵活借还</div>
           <div class="edu">可借额度（元）</div>
-          <div class="price">{{ formatMoney(basicAmount,0) }}</div>
+          <div class="price">{{ basicAmount }}</div>
           <mt-button @click="btnFour" type="default">继续认证</mt-button>
         </div>
         <!--------------------------------认证资料被驳回---------------------------------->
@@ -52,18 +52,33 @@
           <div class="xinyong">认证资料被驳回</div>
           <mt-button  @click="btnFive" type="default">重新认证</mt-button>
         </div>-->
+        <!-------------------------------------有未结清账单----------------------------------------->
+        <div class="content_inner two"  v-if="authStatus==6">
+          <div class="title">现金短贷-灵活借还</div>
+          <div class="edu">可借额度（元）</div>
+          <div class="price">{{ basicAmount }}</div>
+          <mt-button @click="btnSix" type="default">马上拿钱</mt-button>
+        </div>
         <!--------------------------------审核通过---------------------------------------->
         <div class="content_inner two"  v-if="authStatus==8">
           <div class="title">现金短贷-灵活借还</div>
           <div class="edu">可借额度（元）</div>
-          <div class="price">{{ formatMoney(basicAmount,0) }}</div>
+          <div class="price">{{ basicAmount }}</div>
           <mt-button @click="btnEight" type="default">马上拿钱</mt-button>
         </div>
-        <div class="content_inner two"  v-if="authStatus==6">
+        <!--------------------------------等待放款状态---------------------------------------->
+        <div class="content_inner two"  v-if="authStatus==9">
           <div class="title">现金短贷-灵活借还</div>
           <div class="edu">可借额度（元）</div>
-          <div class="price">{{ formatMoney(basicAmount,0) }}</div>
-          <mt-button @click="btnSix" type="default">马上拿钱</mt-button>
+          <div class="price">{{ basicAmount }}</div>
+          <mt-button @click="btnNine" type="default">马上拿钱</mt-button>
+        </div>
+        <!--------------------------------等待放款状态---------------------------------------->
+        <div class="content_inner two"  v-if="authStatus==10">
+          <div class="title">现金短贷-灵活借还</div>
+          <div class="edu">可借额度（元）</div>
+          <div class="price">{{ basicAmount }}</div>
+          <mt-button @click="btnTen" type="default">马上拿钱</mt-button>
         </div>
       </div>
       <!-------------------------------------速报----------------------------------------->
@@ -112,7 +127,7 @@ export default {
   methods: {
     formatMoney,
     //TODO 去实名认证
-    btnOne(){
+    btnZero(){
       if(sessionStorage.getItem('authorization')){
           //去实名认证
         this.$router.push('/realAuth')
@@ -121,18 +136,33 @@ export default {
       }
     },
     //TODO 继续认证-生成订单
-    btnTwo(){
+    btnOne(type){
       this.httpRequest.addLenderCase({
         prodId: this.productId
       }).then((res)=>{
         console.log('生成订单',res)
         if(res.code == '00000000'){
-          this.jixuAuth()
+          if(type==1){
+            this.toast('借款已申请，请等待审核')
+            //this.updateLenderCaseId(res.data)
+          }else{
+            this.jixuAuth()
+          }
+        }
+      })
+    },
+    //TODO 老客复借修改订单
+    updateLenderCaseId(lenderCaseId){
+      this.httpRequest.updateLenderCaseId({
+        lenderCaseId: lenderCaseId
+      }).then((res)=>{
+        if(res.code == '00000000'){
+          this.$router.push('/borrowMoney')
         }
       })
     },
     //TODO 审核中
-    btnThree(){
+    btnTwo(){
       this.Toast({
         message: '正在快马加鞭审核...',
         position: 'center',
@@ -147,15 +177,50 @@ export default {
     btnFive(){
 
     },
-    //TODO 马上拿钱
-    btnEight(){
-      this.$router.push('/borrowMoney')
-    },
+    //TODO 还有未还清的订单
     btnSix(){
       this.Toast({
         message: '您还有未还清的订单，请结清后再来申请',
         position: 'center',
         duration: 2000
+      })
+    },
+    //TODO 马上拿钱
+    btnEight(){
+      this.$router.push('/borrowMoney')
+    },
+    //TODO 待放款
+    btnNine(){
+      this.Toast({
+        message: '等待放款中，请耐心等待',
+        position: 'center',
+        duration: 2000
+      })
+    },
+    //TODO 老客复借
+    btnTen(){
+      this.httpRequest.continueAuth({
+        proId:''
+      }).then((res)=>{
+        console.log('查看继续认证信息',res)
+        if(res.code == '00000000'){
+          switch (res.data.status){
+            case 1:
+              if(res.data.data.data_source_code=='hulu'){
+                sessionStorage.setItem('hulu',res.data.data.data_source_code)
+                this.$router.push({path:'/operatorAuth',query:{data_source_code: res.data.data.data_source_code}})
+              }
+              break
+            case 2:
+              sessionStorage.setItem('shopList',JSON.stringify(res.data.data))
+              this.$router.push('/checkShop')
+              break
+            case 3:
+              this.btnOne(1)
+              //this.toast('借款已申请，请等待审核')
+              break
+          }
+        }
       })
     },
     goBannerUrl(path){
@@ -190,16 +255,24 @@ export default {
             case 4://继续认证
               this.getHomeQuery()
               break
+            case 6://显示温馨公告
+              if(res.data.days<=0){
+                this.showYuqiHome = true
+                if (sessionStorage.getItem('closeYuqiHome')){
+                  this.showYuqiHome = false
+                }
+                this.days = res.data.days
+              }
+              this.getHomeQuery()
+              break
             case 8://审核通过
               this.getHomeQuery()
               break
-            case 6://显示温馨公告
-              this.showYuqiHome = true
-              if (sessionStorage.getItem('closeYuqiHome')){
-                this.showYuqiHome = false
-              }
+            case 9://等待放款
               this.getHomeQuery()
-              this.days = res.data.days
+              break
+            case 10://老客复借
+              this.getHomeQuery()
               break
           }
         }
@@ -448,7 +521,7 @@ export default {
       }
       .subao {
         text-align: center;
-        padding-top: .6rem;
+        padding-top: 1rem;
         .marquee_box {
           position: relative;
           height: .5rem;

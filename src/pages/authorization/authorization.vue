@@ -34,6 +34,7 @@ export default {
 	  return {
 	    authQueryList: [],
       bankList: [],
+      productId:'',
     }
   },
   methods: {
@@ -63,23 +64,64 @@ export default {
     },
     // TODO 跳转
     nextStop(item){
-      if(item.authStatusStr == '已认证'){
-        this.toast('已经认证成功')
-        return
-      }
-      console.log(item.datasourceCode)
-      switch (item.datasourceCode){
-        case 'hulu':
-          this.$router.push('/operatorAuth')
-          break
-        case 'business':
-          this.$router.push('/checkShop')
-          break
-        case 'SFJY':
-          this.$router.push('/realAuth')
-          break
 
-      }
+      this.httpRequest.existCaseInfo().then((res)=>{
+        console.log('查询是否实名认证',res)
+        if(res.code == '00000000'){
+          if(res.data){
+            if(item.authStatusStr == '已认证'){
+              this.toast('已经认证成功')
+              return
+            }
+            console.log(item.datasourceCode)
+            switch (item.datasourceCode){
+              case 'hulu':
+                this.$router.push('/operatorAuth')
+                break
+              case 'business':
+                this.$router.push('/checkShop')
+                break
+              case 'SFJY':
+                this.$router.push('/realAuth')
+                break
+            }
+          }else{
+            if(item.datasourceCode == 'SFJY'){
+              this.$router.push('/realAuth')
+              return
+            }
+            this.noOrder(item)
+          }
+        }
+      })
+    },
+    // TODO 没有生成订单
+    noOrder(item){
+      this.httpRequest.getHomeQuery().then((res)=>{
+        console.log('继续认证',res)
+        if(res.code == '00000000'){
+          this.httpRequest.addLenderCase({
+            prodId: res.data.id
+          }).then((res1)=>{
+            console.log('生成订单',res1)
+            if(res1.code == '00000000'){
+               switch (item.datasourceCode){
+                case 'hulu':
+                  this.$router.push('/operatorAuth')
+                  break
+                case 'business':
+                  this.$router.push('/checkShop')
+                  break
+                case 'SFJY':
+                  this.$router.push('/realAuth')
+                  break
+              }
+            }else if(res.code == '300012'){
+              this.$router.push('/realAuth')
+            }
+          })
+        }
+      })
     },
     //TODO 获取银行卡列表
     getBankList(){

@@ -3,11 +3,12 @@
   <div class="orderDetail">
     <ul class="orderDetail">
       <li><span>订单状态</span><span :class="returnMessage.statusStr == '已逾期' ? 'red' : 'blue'">{{ returnMessage.statusStr }}</span></li>
-      <li><span>订单号</span><span>0g534as65gasd53a4gha</span></li>
+      <li><span>订单号</span><span>{{ returnMessage.orderId }}</span></li>
       <li><span>姓名</span><span>{{ returnMessage.userName }}</span></li>
       <li><span>收款银行卡</span><span>{{ returnMessage.bankName }}{{ returnMessage.bankCard }}</span></li>
       <li><span>借款金额</span><span>{{ returnMessage.lenderAmount | returnNumber }}</span></li>
       <li><span>借款期限</span><span>{{ returnMessage.termDay }} 天</span></li>
+      <li><span>借款日期</span><span>{{ returnMessage.createTime }}</span></li>
       <li><span>应还款日期</span><span>{{ returnMessage.returnDate }}</span></li>
       <li><span>逾期滞纳金</span><span>{{ returnMessage.cost | returnNumber }}/天</span></li>
       <li><span>逾期天数</span><span :class="returnMessage.overdueDay ==0 ? '' : 'red'">{{ returnMessage.overdueDay }}天</span></li>
@@ -31,7 +32,7 @@ export default {
   },
   filters:{
     returnNumber(num){
-      return num ? Number(num).toFixed(0) : ''
+      return num ? Number(num).toFixed(2) : ''
     }
   },
   created(){

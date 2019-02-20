@@ -12,7 +12,7 @@
     </div>
   </div>
   <div class="imgWrap">
-    <img src="../../assets/img/kefu.jpg" alt="">
+    <img src="../../assets/img/kefu.png" alt="">
   </div>
 </div>
 </template>

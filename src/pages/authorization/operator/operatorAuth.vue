@@ -30,7 +30,7 @@
         </div>
         <p>4、其他</p>
         <div class="content">
-          <span>如需帮助请拨打人工客服：<br/>400-164-5268</span>
+          <span>如遇其它问题，请直接在微信内搜索“zaixiankefu10”添加58掌柜官方客服进行留言</span>
         </div>
         <div class="btn" @click="closeCommon">关闭</div>
       </div>
@@ -111,6 +111,7 @@ export default {
         p {
           font-weight: bold;
           font-size: .3rem;
+          line-height: .5rem;
         }
         .content{
           padding-left:.3rem;

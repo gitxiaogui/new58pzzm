@@ -13,7 +13,7 @@
       <p><span>申请期限</span><span>{{ productData.period }}{{ periodSpanOptions[productData.periodSpan] }}</span></p>
       <p v-for="(item,index) in costList" :key="index" v-if="item.finaceItemCode==1009"><span>服务费</span><span>{{ item.cost | returnNumber }}元</span></p>
       <p><span>申请用途</span><span>{{ productData.prodName }}</span></p>
-      <p v-for="(item,index) in costList"  :key="index" v-if="item.finaceItemCode==1002"><span>利息费用</span><span>{{ item.cost | returnNumber }}元</span></p>
+      <p v-for="(item,index) in costList"  :key="index" v-if="item.finaceItemCode==1002"><span>利息费用</span><span>{{ item.cost }}元</span></p>
       <p v-for="(item,index) in costList"  :key="index" v-if="item.finaceItemCode==1003"><span>逾期罚息(每天)</span><span>{{ item.cost | returnNumber }}元</span></p>
       <p><span>收款银行卡</span><span  @click="checkBank" class="blue" v-if="!bankName">添加银行卡<i class="iconfont icon-youjiantou"></i></span><span @click="checkBank" v-if="bankName"><i>{{ bankName }}({{ bankAccount }})</i><i class="iconfont icon-youjiantou"></i></span></p>
     </div>

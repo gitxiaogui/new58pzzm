@@ -2,7 +2,7 @@
   <div class="yuqiHome">
       <div class="content">
         <div class="title">溫馨公共</div>
-        <p>您好，您的订单<span v-if="days>0">已逾期{{ days }}天</span><span v-else>今日即将到期</span>，为避免逾期对您的征信信用产生影响，请于24点前按时还款。
+        <p>您好，您的订单<span v-if="days<0">已逾期{{ Math.abs(Number(days)) }}天</span><span v-if="days==0">今日即将到期</span>，为避免逾期对您的征信信用产生影响，请于24点前按时还款。
 如有疑问请微信搜索“zaixiankefu10”并添加“58掌柜客服”留言咨询。</p>
         <div class="btn" @click="closeYuqiHome">知道了</div>
       </div>

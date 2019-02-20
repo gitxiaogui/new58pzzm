@@ -2,8 +2,12 @@
   <div id="checkShop">
     <div class="checkShop">
       <ul class="checkList">
-        <li v-for="(item,index) in checkList" :key="index" @click="checked(index)">
+        <!--<li v-for="(item,index) in checkList" :key="index" @click="checked(index)">
           <img :src="check == index ? item.checked : item.check" alt="">
+          <img :src="item.icon" alt="">
+        </li>-->
+        <li v-for="(item,index) in checkList" :key="index" @click="checked(index)">
+          <img :src="item.check" alt="">
           <img :src="item.icon" alt="">
         </li>
       </ul>
@@ -24,6 +28,7 @@
 <script>
 import Juxing1 from '../../assets/img/juxing1.png'
 import Juxing2 from '../../assets/img/juxing2.png'
+import Juxing3 from '../../assets/img/juxing3.png'
 import Ele from '../../assets/img/ele.png'
 import Taobao from '../../assets/img/taobao.png'
 import Jingdong from '../../assets/img/jingdong.png'
@@ -32,10 +37,15 @@ export default {
   components: {},
   data(){
 	  return {
-      checkList: [
+      /*checkList: [
         {icon:Ele,check:Juxing2,checked:Juxing1},
         {icon:Jingdong,check:Juxing2,checked:Juxing1},
         {icon:Taobao,check:Juxing2,checked:Juxing1}
+        ],*/
+      checkList: [
+        {icon:Ele,check:Juxing1},
+        {icon:Jingdong,check:Juxing3},
+        {icon:Taobao,check:Juxing3}
         ],
       check: 0,
       shopList: []
@@ -47,7 +57,8 @@ export default {
     },
     // 下一步
     nextStop(){
-      switch (this.check) {
+      this.$router.push('/eleAuth')
+      /*switch (this.check) {
         case 0:
           this.$router.push('/eleAuth')
           break
@@ -57,7 +68,7 @@ export default {
         case 2:
           this.$router.push('/taobaoAuth')
           break
-      }
+      }*/
     }
   },
   created(){

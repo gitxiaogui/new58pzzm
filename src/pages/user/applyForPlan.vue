@@ -1,9 +1,10 @@
 <template>
 <div id="applyForPlan">
-  <div class="applyForPlan">
+  <div class="plan" v-if="!planData.handleList">暂无进度信息</div>
+  <div v-else class="applyForPlan">
     <div class="headerTitle">
-      <p>借款金额：1000元</p>
-      <p>借款期限：7天</p>
+      <p>借款金额：{{ planData.amount }}</p>
+      <p>借款期限：{{ planData.periodStr }}</p>
     </div>
     <div class="applyForContent">
       <div class="applyForTitle">
@@ -12,15 +13,16 @@
       </div>
       <div class="applyForInner">
         <ul class="statusList">
-          <li v-for="(item,index) in statusList" :key="index">
+          <li v-for="(item,index) in planData.handleList" :key="index">
             <div class="statusTitle">
-              <i class="iconfont icon-duihao2" :class="{orange: item.btnDisabled ? true : false }"></i>
+              <!--<i class="iconfont icon-duihao2" :class="{orange: item.btnDisabled ? true : false }"></i>-->
+              <i class="iconfont icon-duihao2 orange" ></i>
               <span>{{ item.title }}</span>
             </div>
             <div class="statusContent">
               <div class="right">
                 <p>{{ item.desc }}</p>
-                <p class="blue" v-if="item.btnName" @click="JXAuth">{{ item.btnName }}</p>
+                <p class="blue"  v-if="item.btnName" @click="JXAuth(item.btnDisabled)">{{ item.btnName }}</p>
                 <p class="time">{{ dateFormat(new Date(parseInt(item.time)), 'yyyy-MM-dd hh:mm:ss') }}</p>
               </div>
             </div>
@@ -45,7 +47,7 @@ import { dateFormat } from "../../common/utils";
   components: {},
   data(){
 	  return {
-	    statusList: []
+	    planData:{},
     }
   },
   methods: {
@@ -54,12 +56,15 @@ import { dateFormat } from "../../common/utils";
       this.httpRequest.getLendCaseProcess().then((res)=>{
         console.log('获取借款进度',res)
         if(res.code == '00000000'){
-          this.statusList = res.data
+          this.planData = res.data
         }
       })
     },
 
-    JXAuth(){
+    JXAuth(type){
+      if(!type){
+        return
+      }
       this.jixuAuth()
     }
   },
@@ -79,6 +84,10 @@ import { dateFormat } from "../../common/utils";
     padding:1.54rem 0 0;
     @include wh(100%,auto);
     background: #f1f1f1;
+    overflow-y: auto;
+    .plan{
+      text-align: center;
+    }
     .applyForPlan{
       @include wh(100%,100%);
       background: #fff;

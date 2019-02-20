@@ -3,7 +3,7 @@
   <div class="returnMoney">
     <div class="topTitle">
       <span class="title">应还总金额（元）</span>
-      <span v-if="!returnMoneyStatus" style="padding-top:.2rem;color:#ccc;">暂无待还订单</span>
+      <span v-if="!returnMoneyStatus" class="noOrder" >0.00</span>
       <p  v-if="returnMoneyStatus">{{ returnData.returnMoney | returnNumber }}</p>
       <span v-if="returnMoneyStatus" @click="returnMoney" class="btn">还款</span>
     </div>
@@ -11,7 +11,7 @@
     <div class="order">
       <div class="orderTitle">待还订单</div>
       <ul class="orderList">
-        <li v-if="!returnMoneyStatus" style="text-align: center;color:#ccc;">暂无待还订单</li>
+        <li v-if="!returnMoneyStatus" style="text-align: center;color:#ccc;padding-top:.6rem;">暂无待还订单</li>
         <li v-if="returnMoneyStatus" @click="goOrder()">
           <div class="top liInner">
             <span>还款日期{{ returnData.expireDate }}</span>
@@ -108,6 +108,11 @@ export default {
     @include wh(100%,100%);
     overflow-y: auto;
     .topTitle{
+      .noOrder{
+        padding-top:.2rem;
+        font-size:.6rem;
+        font-weight:bold;
+      }
       @include df;
       @include fd(column);
       @include ac(center);

@@ -26,7 +26,7 @@
 <script>
 import ShowCheckBank from '../../components/showCheckBank'
 import BUS from '../../vueBus/index'
-import { Toast } from 'mint-ui'
+
 export default {
   props: {},
   components: {
@@ -56,7 +56,7 @@ export default {
       }).then((res)=>{
         console.log('还款成功',res)
         if(res.code == '00000000'){
-          Toast({
+          this.Toast({
             message: '还款申请已提交，因银行通道返回结果有一定延时，请留意还款成功短信通知。',
             position: 'top',
             duration: 3000
@@ -79,7 +79,7 @@ export default {
   },
   filters:{
     returnNumber(num){
-      return num ? Number(num).toFixed(0) : ''
+      return num ? Number(num).toFixed(2) : ''
     }
   },
   activated(){

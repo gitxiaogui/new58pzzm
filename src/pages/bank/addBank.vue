@@ -58,7 +58,7 @@ export default {
       },
       captcha: '',
       getCodeData:{},
-
+      sendCode:false
     }
   },
   methods: {
@@ -125,7 +125,7 @@ export default {
       let success = checkRules(this.formData,basicRules)
       if(success){
         this.btnDisabled = true
-        if(sessionStorage.getItem('sendCode')){
+        if(this.sendCode){
           this.getCodeData = JSON.parse(sessionStorage.getItem('sendCode'))
           this.httpRequest.bindCardSendMsg({
             merchantno: this.getCodeData.merchantno,
@@ -147,6 +147,7 @@ export default {
               this.getCodeData = res.data
               this.timered()
               sessionStorage.setItem('sendCode',JSON.stringify(this.getCodeData))
+              this.sendCode = true
               }else{
                 this.btnDisabled = false
               }

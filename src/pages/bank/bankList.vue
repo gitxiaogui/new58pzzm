@@ -123,10 +123,10 @@ export default {
       padding-right:.3rem;
       border-bottom:1px solid #999;
       .left{
-        //@include wh(.6rem,.6rem);
+        @include wh(.6rem,.6rem);
         margin-right:.2rem;
         img{
-         // @include wh(100%,100%);
+          @include wh(100%,100%);
         }
       }
       .right{

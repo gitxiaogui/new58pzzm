@@ -508,3 +508,19 @@ export const addDeviceInfo = (data) =>{
   })
 }
 
+//TODO  老客复借重新生成待用户确认订单
+export const updateLenderCaseId = (data) =>{
+  return axios({
+    method: 'POST',
+    url: '/customer/lenderCase/updateLenderCaseId',
+    data
+  })
+}
+//TODO  查询是否有实名认证
+export const existCaseInfo = (data) =>{
+  return axios({
+    method: 'POST',
+    url: '/customer/lenderCase/existCaseInfo',
+    data
+  })
+}
