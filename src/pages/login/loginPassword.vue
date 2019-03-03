@@ -64,6 +64,7 @@ export default {
       if (error){
         this.httpRequest.passwordLogin({
           orgFlag: "SHPTXXKJ",
+          diversionFlag: "wxdl",
           platformFlag: "weixinzhengshi",
           phoneNumber: this.formData.phone,
           password: this.formData.password,

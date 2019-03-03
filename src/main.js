@@ -104,8 +104,9 @@ Vue.prototype.taobaoMsgValidate = function(phone,token){
 
 // 继续认证
 Vue.prototype.jixuAuth =  function(){
+  let prodId = sessionStorage.getItem('prodId')
   this.httpRequest.continueAuth({
-    proId:''
+    proId:prodId
   }).then((res)=>{
     console.log('查看继续认证信息',res)
     if(res.code == '00000000'){

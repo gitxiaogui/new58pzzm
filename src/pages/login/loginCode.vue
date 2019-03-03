@@ -135,6 +135,7 @@
           this.loading = true
           this.httpRequest.captchaLogin({
             orgFlag: "SHPTXXKJ",
+            diversionFlag: "wxdl",
             platformFlag: "weixinzhengshi",
             phoneNumber: this.formData.phone,
             captcha: this.formData.captcha,

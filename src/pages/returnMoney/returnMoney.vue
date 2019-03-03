@@ -62,7 +62,7 @@ export default {
         if(res.code == '00000000'){
           if(res.data){
             this.returnData = res.data
-            if(this.returnData.returnMoney){
+            if(this.returnData || this.returnData.returnMoney){
               this.returnMoneyStatus = true
             }
           }

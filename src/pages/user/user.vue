@@ -74,6 +74,10 @@ export default {
       this.$router.push('/contactKefu')
     },
     myBank(){
+      if (!this.authorization){
+        this.$router.push('/loginCode')
+        return
+      }
       this.$router.push('/bankList')
     },
     goSetting(){
@@ -94,7 +98,13 @@ export default {
         this.$router.push('/loginCode')
         return
       }
-      this.$router.push('/applyForPlan')
+      this.httpRequest.queryRealAuth().then((res)=>{
+        console.log('获取实名认证信息')
+        if (res.code == '00000000'){
+          this.$router.push('/applyForPlan')
+        }
+      })
+
     },
 
   },

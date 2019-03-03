@@ -72,9 +72,18 @@ export default {
   methods: {
     // TODO 跳转添加银行卡
     addBank(){
-      if (this.realAuthStatus){
-        this.$router.push('/addBank')
-      }
+      this.httpRequest.queryRealAuth().then((res)=>{
+        console.log('获取实名认证信息')
+        if (res.code == '00000000'){
+          this.realAuthStatus = true
+          sessionStorage.setItem('realAuth',JSON.stringify(res.data))
+          this.$router.push('/addBank')
+        } else if (res.code == '1000607'){
+          this.$router.push('/realAuth')
+          // 去实名认证
+        }
+      })
+
     },
     // TODO 获取银行卡列表
     getBankList(){
@@ -85,19 +94,20 @@ export default {
         }
       })
     },
-    // TODO 获取实名认证信息
+    /*// TODO 获取实名认证信息
     queryRealAuth(){
       this.httpRequest.queryRealAuth().then((res)=>{
         console.log('获取实名认证信息')
         if (res.code == '00000000'){
           this.realAuthStatus = true
           sessionStorage.setItem('realAuth',JSON.stringify(res.data))
+          this.$router.push('/addBank')
         } else if (res.code == '1000607'){
           this.$router.push('/realAuth')
           // 去实名认证
         }
       })
-    }
+    }*/
   },
   created(){
 
@@ -105,7 +115,6 @@ export default {
   activated(){
     localStorage.setItem('headerTitle','我的银行卡')
     this.getBankList()
-    this.queryRealAuth()
   }
 }
 </script>

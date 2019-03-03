@@ -12,10 +12,10 @@
         </li>
       </ul>
       <div class="notice">
-        <div class="left">注：</div>
+        <!--<div class="left">注：</div>-->
         <div class="right">
-          <p>1、认证“饿了么”会提高信用额度哦</p>
-          <p>2、以上三个电商您可任选其一认证</p>
+          <!--<p>1、认证“饿了么”会提高信用额度哦</p>-->
+          <p><!--2、-->以上三个电商您可任选其一认证</p>
         </div>
       </div>
       <div class="btn">

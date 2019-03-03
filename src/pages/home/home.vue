@@ -199,8 +199,9 @@ export default {
     },
     //TODO 老客复借
     btnTen(){
+      let prodId = sessionStorage.getItem('prodId')
       this.httpRequest.continueAuth({
-        proId:''
+        proId:prodId
       }).then((res)=>{
         console.log('查看继续认证信息',res)
         if(res.code == '00000000'){
@@ -292,8 +293,9 @@ export default {
       this.httpRequest.getHomeQuery().then((res)=>{
         console.log('继续认证',res)
         if(res.code == '00000000'){
-          this.basicAmount = res.data.basicAmount
+          this.basicAmount = res.data.amountStr
           this.productId = res.data.id
+          sessionStorage.setItem('prodId', this.productId)
         }
       })
     },
